@@ -19,3 +19,28 @@ header h1 {
   margin: 0 0 16px 0;
   font-size: 32px;
 }
+
+.search-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-bar input {
+  flex: 1;
+  min-width: 220px;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.search-bar button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
