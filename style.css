@@ -141,3 +141,28 @@ header h1 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+#error-banner {
+  margin-top: 20px;
+}
+
+.error-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.error-box button {
+  padding: 8px 14px;
+  border: none;
+  background-color: #dc2626;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
