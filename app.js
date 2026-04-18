@@ -111,6 +111,27 @@ function updateCurrentWeather(location, weatherData) {
   removeSkeleton(time);
 }
 
+function updateForecast(weatherData) {
+  const daily = weatherData.daily;
+
+  for (let i = 0; i < 7; i++) {
+    const weatherInfo = weatherCodeMap[daily.weathercode[i]] || {
+      description: "Unknown",
+      icon: "❓"
+    };
+
+    const date = new Date(daily.time[i]);
+    const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
+
+    forecastElements[i].dayName.textContent = dayName;
+    forecastElements[i].dayIcon.textContent = weatherInfo.icon;
+    forecastElements[i].dayTemp.textContent = `${daily.temperature_2m_max[i]}°C / ${daily.temperature_2m_min[i]}°C`;
+
+    removeSkeleton(forecastElements[i].dayName);
+    removeSkeleton(forecastElements[i].dayIcon);
+    removeSkeleton(forecastElements[i].dayTemp);
+  }
+}
 
 searchBtn.addEventListener("click", function () {
   const city = cityInput.value.trim();
@@ -196,4 +217,5 @@ searchBtn.addEventListener("click", async function () {
   const weatherData = await weatherResponse.json();
 
   updateCurrentWeather(location, weatherData);
+  updateForecast(weatherData);
 });
