@@ -223,6 +223,7 @@ searchBtn.addEventListener("click", async function () {
 
     updateCurrentWeather(location, weatherData);
     updateForecast(weatherData);
+    fetchLocalTime(weatherData.timezone);
   } catch (error) {
     showErrorBanner("Unable to load weather data. Please try again.");
   }
