@@ -133,35 +133,19 @@ function updateForecast(weatherData) {
   }
 }
 
-searchBtn.addEventListener("click", function () {
-  const city = cityInput.value.trim();
+function showErrorBanner(message) {
+  errorBanner.innerHTML = `
+    <div class="error-box">
+      <span>${message}</span>
+      <button id="retry-btn" type="button">Retry</button>
+    </div>
+  `;
 
-  if (city === "") {
-    errorBanner.textContent = "Please enter a city name.";
-    return;
-  }
-
-  errorBanner.textContent = "";
-  console.log(city);
-});
-
-searchBtn.addEventListener("click", async function () {
-  const city = cityInput.value.trim();
-
-  if (city === "") {
-    errorBanner.textContent = "Please enter a city name.";
-    return;
-  }
-
-  errorBanner.textContent = "";
-
-  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
-
-  const response = await fetch(geoUrl);
-  const data = await response.json();
-
-  console.log(data);
-});
+  const retryBtn = document.getElementById("retry-btn");
+  retryBtn.addEventListener("click", function () {
+    searchBtn.click();
+  });
+}
 
 searchBtn.addEventListener("click", async function () {
   const city = cityInput.value.trim();
@@ -173,49 +157,39 @@ searchBtn.addEventListener("click", async function () {
 
   errorBanner.textContent = "";
 
-  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
+  try {
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
 
-  const response = await fetch(geoUrl);
-  const data = await response.json();
+    const geoResponse = await fetch(geoUrl);
 
-  if (!data.results || data.results.length === 0) {
-    errorBanner.textContent = "City not found. Please try another city.";
-    return;
+    if (!geoResponse.ok) {
+      throw new Error("Geocoding request failed.");
+    }
+
+    const geoData = await geoResponse.json();
+
+    if (!geoData.results || geoData.results.length === 0) {
+      errorBanner.textContent = "City not found. Please try another city.";
+      return;
+    }
+
+    const location = geoData.results[0];
+    const latitude = location.latitude;
+    const longitude = location.longitude;
+
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
+
+    const weatherResponse = await fetch(weatherUrl);
+
+    if (!weatherResponse.ok) {
+      throw new Error("Weather request failed.");
+    }
+
+    const weatherData = await weatherResponse.json();
+
+    updateCurrentWeather(location, weatherData);
+    updateForecast(weatherData);
+  } catch (error) {
+    showErrorBanner("Network error. Please try again.");
   }
-
-  const location = data.results[0];
-  console.log(location);
-});
-
-searchBtn.addEventListener("click", async function () {
-  const city = cityInput.value.trim();
-
-  if (city === "") {
-    errorBanner.textContent = "Please enter a city name.";
-    return;
-  }
-
-  errorBanner.textContent = "";
-
-  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
-
-  const geoResponse = await fetch(geoUrl);
-  const geoData = await geoResponse.json();
-
-  if (!geoData.results || geoData.results.length === 0) {
-    errorBanner.textContent = "City not found. Please try another city.";
-    return;
-  }
-
-  const location = geoData.results[0];
-  const latitude = location.latitude;
-  const longitude = location.longitude;
-
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
-
-  const weatherResponse = await fetch(weatherUrl);
-  const weatherData = await weatherResponse.json();
-
-  updateCurrentWeather(location, weatherData);
-  updateForecast(weatherData);
 });
