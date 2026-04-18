@@ -78,6 +78,39 @@ const forecastElements = [
   }
 ];
 
+function removeSkeleton(element) {
+  element.classList.remove("skeleton");
+  element.classList.remove("skeleton-title");
+  element.classList.remove("skeleton-temp");
+  element.classList.remove("skeleton-line");
+  element.classList.remove("skeleton-day");
+  element.classList.remove("skeleton-icon");
+  element.classList.remove("skeleton-small");
+}
+
+function updateCurrentWeather(location, weatherData) {
+  const current = weatherData.current_weather;
+  const currentIndex = weatherData.hourly.time.indexOf(current.time);
+  const weatherInfo = weatherCodeMap[current.weathercode] || {
+    description: "Unknown",
+    icon: "❓"
+  };
+
+  cityName.textContent = location.name;
+  temperature.textContent = `${current.temperature}°C`;
+  description.textContent = `${weatherInfo.icon} ${weatherInfo.description}`;
+  humidity.textContent = `Humidity: ${weatherData.hourly.relativehumidity_2m[currentIndex]}%`;
+  windSpeed.textContent = `Wind Speed: ${current.windspeed} km/h`;
+  time.textContent = `Time: ${current.time}`;
+
+  removeSkeleton(cityName);
+  removeSkeleton(temperature);
+  removeSkeleton(description);
+  removeSkeleton(humidity);
+  removeSkeleton(windSpeed);
+  removeSkeleton(time);
+}
+
 
 searchBtn.addEventListener("click", function () {
   const city = cityInput.value.trim();
@@ -162,5 +195,5 @@ searchBtn.addEventListener("click", async function () {
   const weatherResponse = await fetch(weatherUrl);
   const weatherData = await weatherResponse.json();
 
-  console.log(weatherData);
+  updateCurrentWeather(location, weatherData);
 });
