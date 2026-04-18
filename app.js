@@ -147,6 +147,19 @@ function showErrorBanner(message) {
   });
 }
 
+function formatLocalTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+
+  return date.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    weekday: "short",
+    month: "short",
+    day: "numeric"
+  });
+}
+
 searchBtn.addEventListener("click", async function () {
   const city = cityInput.value.trim();
 
