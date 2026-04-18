@@ -160,6 +160,27 @@ function formatLocalTime(dateTimeString) {
   });
 }
 
+function fetchLocalTime(timezone) {
+  if (!timezone) {
+    time.textContent = `Time: ${formatLocalTime(new Date())}`;
+    removeSkeleton(time);
+    return;
+  }
+
+  $.getJSON(`https://worldtimeapi.org/api/timezone/${timezone}`)
+    .done(function (timeData) {
+      time.textContent = `Time: ${formatLocalTime(timeData.datetime)}`;
+      removeSkeleton(time);
+    })
+    .fail(function () {
+      time.textContent = `Time: ${formatLocalTime(new Date())}`;
+      removeSkeleton(time);
+    })
+    .always(function () {
+      console.log("Local time request completed at:", new Date().toLocaleString());
+    });
+}
+
 searchBtn.addEventListener("click", async function () {
   const city = cityInput.value.trim();
 
