@@ -77,3 +77,27 @@ searchBtn.addEventListener("click", async function () {
 
   console.log(data);
 });
+
+searchBtn.addEventListener("click", async function () {
+  const city = cityInput.value.trim();
+
+  if (city === "") {
+    errorBanner.textContent = "Please enter a city name.";
+    return;
+  }
+
+  errorBanner.textContent = "";
+
+  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
+
+  const response = await fetch(geoUrl);
+  const data = await response.json();
+
+  if (!data.results || data.results.length === 0) {
+    errorBanner.textContent = "City not found. Please try another city.";
+    return;
+  }
+
+  const location = data.results[0];
+  console.log(location);
+});
