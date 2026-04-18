@@ -101,14 +101,12 @@ function updateCurrentWeather(location, weatherData) {
   description.textContent = `${weatherInfo.icon} ${weatherInfo.description}`;
   humidity.textContent = `Humidity: ${weatherData.hourly.relativehumidity_2m[currentIndex]}%`;
   windSpeed.textContent = `Wind Speed: ${current.windspeed} km/h`;
-  time.textContent = `Time: ${current.time}`;
 
   removeSkeleton(cityName);
   removeSkeleton(temperature);
   removeSkeleton(description);
   removeSkeleton(humidity);
   removeSkeleton(windSpeed);
-  removeSkeleton(time);
 }
 
 function updateForecast(weatherData) {
