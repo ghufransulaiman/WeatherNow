@@ -46,3 +46,16 @@ const forecastElements = [
     dayTemp: document.getElementById("day-7-temp")
   }
 ];
+
+
+searchBtn.addEventListener("click", function () {
+  const city = cityInput.value.trim();
+
+  if (city === "") {
+    errorBanner.textContent = "Please enter a city name.";
+    return;
+  }
+
+  errorBanner.textContent = "";
+  console.log(city);
+});
