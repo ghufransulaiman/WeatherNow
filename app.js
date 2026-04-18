@@ -59,3 +59,21 @@ searchBtn.addEventListener("click", function () {
   errorBanner.textContent = "";
   console.log(city);
 });
+
+searchBtn.addEventListener("click", async function () {
+  const city = cityInput.value.trim();
+
+  if (city === "") {
+    errorBanner.textContent = "Please enter a city name.";
+    return;
+  }
+
+  errorBanner.textContent = "";
+
+  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
+
+  const response = await fetch(geoUrl);
+  const data = await response.json();
+
+  console.log(data);
+});
