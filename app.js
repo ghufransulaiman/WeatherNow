@@ -190,6 +190,6 @@ searchBtn.addEventListener("click", async function () {
     updateCurrentWeather(location, weatherData);
     updateForecast(weatherData);
   } catch (error) {
-    showErrorBanner("Network error. Please try again.");
+    showErrorBanner("Unable to load weather data. Please try again.");
   }
 });
