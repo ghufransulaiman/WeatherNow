@@ -191,6 +191,36 @@ function formatTemperature(celsiusValue) {
   return `${celsiusValue}°C`;
 }
 
+function saveRecentSearch(city) {
+  recentSearches = recentSearches.filter(function (item) {
+    return item.toLowerCase() !== city.toLowerCase();
+  });
+
+  recentSearches.unshift(city);
+  recentSearches = recentSearches.slice(0, 5);
+
+  localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+  renderRecentSearches();
+}
+
+function renderRecentSearches() {
+  recentSearchesContainer.innerHTML = "";
+
+  recentSearches.forEach(function (city) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "search-chip";
+    chip.textContent = city;
+
+    chip.addEventListener("click", function () {
+      cityInput.value = city;
+      searchWeather();
+    });
+
+    recentSearchesContainer.appendChild(chip);
+  });
+}
+
 async function searchWeather() {
   const city = cityInput.value.trim();
 
@@ -227,6 +257,7 @@ async function searchWeather() {
     }
 
     const location = geoData.results[0];
+    saveRecentSearch(location.name);
     const latitude = location.latitude;
     const longitude = location.longitude;
 
