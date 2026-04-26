@@ -179,13 +179,13 @@ function fetchLocalTime(timezone) {
     });
 }
 
-searchBtn.addEventListener("click", async function () {
+async function searchWeather() {
   const city = cityInput.value.trim();
 
   if (city === "" || city.length < 2) {
-  errorBanner.textContent = "Please enter at least 2 characters for the city name.";
-  return;
- }
+    errorBanner.textContent = "Please enter at least 2 characters for the city name.";
+    return;
+  }
 
   errorBanner.textContent = "";
 
@@ -225,4 +225,8 @@ searchBtn.addEventListener("click", async function () {
   } catch (error) {
     showErrorBanner("Unable to load weather data. Please try again.");
   }
+}
+
+searchBtn.addEventListener("click", function () {
+  searchWeather();
 });
