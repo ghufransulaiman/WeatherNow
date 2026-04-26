@@ -226,7 +226,17 @@ async function searchWeather() {
     showErrorBanner("Unable to load weather data. Please try again.");
   }
 }
-
+let debounceTimer;
 searchBtn.addEventListener("click", function () {
   searchWeather();
+
+  cityInput.addEventListener("input", function () {
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(function () {
+    if (cityInput.value.trim().length >= 2) {
+      searchWeather();
+    }
+  }, 500);
+ });
 });
