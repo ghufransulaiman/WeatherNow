@@ -39,6 +39,9 @@ const description = document.getElementById("description");
 const humidity = document.getElementById("humidity");
 const windSpeed = document.getElementById("wind-speed");
 const time = document.getElementById("time");
+const recentSearchesContainer = document.getElementById("recent-searches");
+const celsiusBtn = document.getElementById("celsius-btn");
+const fahrenheitBtn = document.getElementById("fahrenheit-btn");
 
 const forecastElements = [
   {
@@ -250,6 +253,12 @@ async function searchWeather() {
  }
 }
 let debounceTimer;
+let debounceTimer;
+let currentUnit = "C";
+let lastWeatherData = null;
+let lastLocation = null;
+
+let recentSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
 
 searchBtn.addEventListener("click", function () {
   searchWeather();
