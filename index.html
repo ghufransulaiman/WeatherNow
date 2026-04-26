@@ -31,13 +31,36 @@
     <section class="current-weather-card">
       <h2>Current Weather</h2>
       <div class="weather-content">
-       <div id="city-name" class="skeleton skeleton-title"></div>
-        <div id="temperature" class="skeleton skeleton-temp"></div>
-         <div id="description" class="skeleton skeleton-line"></div>
-          <div id="humidity" class="skeleton skeleton-line"></div>
-           <div id="wind-speed" class="skeleton skeleton-line"></div>
-            <div id="time" class="skeleton skeleton-line"></div>
-         </div>
+        <div class="weather-line">
+          <span class="label">City:</span>
+          <span id="city-name" class="skeleton skeleton-line value-box"></span>
+        </div>
+
+        <div class="weather-line">
+          <span class="label">Temperature:</span>
+          <span id="temperature" class="skeleton skeleton-line value-box"></span>
+        </div>
+
+        <div class="weather-line">
+          <span class="label">Description:</span>
+          <span id="description" class="skeleton skeleton-line value-box"></span>
+        </div>
+
+        <div class="weather-line">
+          <span class="label">Humidity:</span>
+          <span id="humidity" class="skeleton skeleton-line value-box"></span>
+        </div>
+
+        <div class="weather-line">
+          <span class="label">Wind Speed:</span>
+          <span id="wind-speed" class="skeleton skeleton-line value-box"></span>
+        </div>
+
+        <div class="weather-line">
+          <span class="label">Time:</span>
+          <span id="time" class="skeleton skeleton-line value-box"></span>
+        </div>
+      </div>
     </section>
 
     <section class="forecast-section">

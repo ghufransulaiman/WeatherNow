@@ -161,6 +161,7 @@ function formatLocalTime(dateTimeString) {
   });
 }
 
+// jQuery AJAX request for local time
 function fetchLocalTime(timezone) {
   if (!timezone) {
     time.textContent = `Time: ${formatLocalTime(new Date())}`;
@@ -174,9 +175,19 @@ function fetchLocalTime(timezone) {
       removeSkeleton(time);
     })
     .fail(function () {
-      time.textContent = `Time: ${formatLocalTime(new Date())}`;
-      removeSkeleton(time);
-    })
+    const cityTime = new Date().toLocaleString("en-US", {
+      timeZone: timezone,
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    });
+
+    time.textContent = `Time: ${cityTime}`;
+    removeSkeleton(time);
+  })
     .always(function () {
       console.log("Local time request completed at:", new Date().toLocaleString());
     });
@@ -294,7 +305,6 @@ async function searchWeather() {
   showErrorBanner(error.message);
  }
 }
-let debounceTimer;
 let debounceTimer;
 let currentUnit = "C";
 let lastWeatherData = null;
