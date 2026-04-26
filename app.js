@@ -192,10 +192,19 @@ async function searchWeather() {
   try {
     const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
 
-    const geoResponse = await fetch(geoUrl);
+    const geoController = new AbortController();
+    const geoTimeoutId = setTimeout(function () {
+      geoController.abort();
+    }, 10000);
+
+    const geoResponse = await fetch(geoUrl, {
+      signal: geoController.signal
+    });
+
+    clearTimeout(geoTimeoutId);
 
     if (!geoResponse.ok) {
-      throw new Error("Geocoding request failed.");
+      throw new Error(`Geocoding request failed with status ${geoResponse.status}`);
     }
 
     const geoData = await geoResponse.json();
@@ -222,9 +231,14 @@ async function searchWeather() {
     updateCurrentWeather(location, weatherData);
     updateForecast(weatherData);
     fetchLocalTime(weatherData.timezone);
-  } catch (error) {
-    showErrorBanner("Unable to load weather data. Please try again.");
-  }
+    } catch (error) {
+    if (error.name === "AbortError") {
+      showErrorBanner("Request timed out after 10 seconds. Please try again.");
+      return;
+    }
+
+  showErrorBanner(error.message);
+ }
 }
 let debounceTimer;
 searchBtn.addEventListener("click", function () {
