@@ -220,10 +220,19 @@ async function searchWeather() {
 
     const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
 
-    const weatherResponse = await fetch(weatherUrl);
+    const weatherController = new AbortController();
+    const weatherTimeoutId = setTimeout(function () {
+      weatherController.abort();
+    }, 10000);
+
+    const weatherResponse = await fetch(weatherUrl, {
+      signal: weatherController.signal
+    });
+
+    clearTimeout(weatherTimeoutId);
 
     if (!weatherResponse.ok) {
-      throw new Error("Weather request failed.");
+      throw new Error(`Weather request failed with status ${weatherResponse.status}`);
     }
 
     const weatherData = await weatherResponse.json();
