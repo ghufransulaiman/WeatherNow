@@ -100,7 +100,7 @@ function updateCurrentWeather(location, weatherData) {
   };
 
   cityName.textContent = location.name;
-  temperature.textContent = `${current.temperature}°C`;
+  temperature.textContent = formatTemperature(current.temperature);
   description.textContent = `${weatherInfo.icon} ${weatherInfo.description}`;
   humidity.textContent = `Humidity: ${weatherData.hourly.relativehumidity_2m[currentIndex]}%`;
   windSpeed.textContent = `Wind Speed: ${current.windspeed} km/h`;
@@ -126,7 +126,7 @@ function updateForecast(weatherData) {
 
     forecastElements[i].dayName.textContent = dayName;
     forecastElements[i].dayIcon.textContent = weatherInfo.icon;
-    forecastElements[i].dayTemp.textContent = `${daily.temperature_2m_max[i]}°C / ${daily.temperature_2m_min[i]}°C`;
+    forecastElements[i].dayTemp.textContent = `${formatTemperature(daily.temperature_2m_max[i])} / ${formatTemperature(daily.temperature_2m_min[i])}`;
 
     removeSkeleton(forecastElements[i].dayName);
     removeSkeleton(forecastElements[i].dayIcon);
@@ -180,6 +180,15 @@ function fetchLocalTime(timezone) {
     .always(function () {
       console.log("Local time request completed at:", new Date().toLocaleString());
     });
+}
+
+function formatTemperature(celsiusValue) {
+  if (currentUnit === "F") {
+    const fahrenheitValue = (celsiusValue * 9) / 5 + 32;
+    return `${fahrenheitValue.toFixed(1)}°F`;
+  }
+
+  return `${celsiusValue}°C`;
 }
 
 async function searchWeather() {
