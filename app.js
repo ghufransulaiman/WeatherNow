@@ -279,6 +279,8 @@ async function searchWeather() {
     } 
 
     const weatherData = await weatherResponse.json();
+    lastWeatherData = weatherData;
+    lastLocation = location;
 
     updateCurrentWeather(location, weatherData);
     updateForecast(weatherData);
@@ -313,3 +315,27 @@ cityInput.addEventListener("input", function () {
     }
   }, 500);
 });
+
+celsiusBtn.addEventListener("click", function () {
+  currentUnit = "C";
+  celsiusBtn.classList.add("active");
+  fahrenheitBtn.classList.remove("active");
+
+  if (lastWeatherData && lastLocation) {
+    updateCurrentWeather(lastLocation, lastWeatherData);
+    updateForecast(lastWeatherData);
+  }
+});
+
+fahrenheitBtn.addEventListener("click", function () {
+  currentUnit = "F";
+  fahrenheitBtn.classList.add("active");
+  celsiusBtn.classList.remove("active");
+
+  if (lastWeatherData && lastLocation) {
+    updateCurrentWeather(lastLocation, lastWeatherData);
+    updateForecast(lastWeatherData);
+  }
+});
+
+renderRecentSearches();
