@@ -205,7 +205,7 @@ async function searchWeather() {
 
     if (!geoResponse.ok) {
       throw new Error(`Geocoding request failed with status ${geoResponse.status}`);
-    }
+    } 
 
     const geoData = await geoResponse.json();
 
@@ -233,7 +233,7 @@ async function searchWeather() {
 
     if (!weatherResponse.ok) {
       throw new Error(`Weather request failed with status ${weatherResponse.status}`);
-    }
+    } 
 
     const weatherData = await weatherResponse.json();
 
