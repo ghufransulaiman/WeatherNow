@@ -250,10 +250,12 @@ async function searchWeather() {
  }
 }
 let debounceTimer;
+
 searchBtn.addEventListener("click", function () {
   searchWeather();
+});
 
-  cityInput.addEventListener("input", function () {
+cityInput.addEventListener("input", function () {
   clearTimeout(debounceTimer);
 
   debounceTimer = setTimeout(function () {
@@ -261,5 +263,4 @@ searchBtn.addEventListener("click", function () {
       searchWeather();
     }
   }, 500);
- });
 });
