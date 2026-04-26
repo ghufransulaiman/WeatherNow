@@ -182,10 +182,10 @@ function fetchLocalTime(timezone) {
 searchBtn.addEventListener("click", async function () {
   const city = cityInput.value.trim();
 
-  if (city === "") {
-    errorBanner.textContent = "Please enter a city name.";
-    return;
-  }
+  if (city === "" || city.length < 2) {
+  errorBanner.textContent = "Please enter at least 2 characters for the city name.";
+  return;
+ }
 
   errorBanner.textContent = "";
 
